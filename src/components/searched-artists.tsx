@@ -6,6 +6,7 @@ import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import { fetchArtistsFromString } from "../services/artist-service";
 import { Artist } from "../types/artist";
+import React from "react";
 
 /**
  * Component to filter and display products based on search input.
@@ -31,7 +32,7 @@ export function SearchedArtists(searchedArtistsProps: SearchedArtistsProps): JSX
 
   // Display the filtered product list.
   return (
-    <>
+    <React.Fragment>
       {artistsData && artistsData.length > 0 && (
         <Popper
           id="mouse-over-popper"
@@ -74,7 +75,7 @@ export function SearchedArtists(searchedArtistsProps: SearchedArtistsProps): JSX
           </Box>
         </Popper>
       )}
-    </>
+    </React.Fragment>
   );
 }
 

@@ -1,9 +1,10 @@
-import { Artist } from "../types/artist";
+import { Artist } from "../types/artist"
 
-import { getApp } from "firebase/app";
+import { getApp } from "firebase/app"
 import {
   Timestamp,
   addDoc,
+  updateDoc,
   collection,
   deleteDoc,
   doc,
@@ -12,27 +13,27 @@ import {
   getFirestore,
   query,
   where,
-} from "firebase/firestore";
+} from "firebase/firestore"
 
-import dayjs from "dayjs";
-import { app } from "../core/firebaseInit";
-import { Availability } from "../types/availability";
-import { Concert } from "../types/concert";
-import { Option } from "../types/option";
-import { Venue } from "../types/venue";
-const db = getFirestore(app ? app : getApp());
+import dayjs from "dayjs"
+import { app } from "../core/firebaseInit"
+import { Availability } from "../types/availability"
+import { Concert } from "../types/concert"
+import { Option, optionStatus } from "../types/option"
+import { Venue } from "../types/venue"
+const db = getFirestore(app ? app : getApp())
 
 const convertFirestoreDateToDayjs = (firestoreDate: Timestamp): dayjs.Dayjs => {
-  return dayjs(firestoreDate.toDate());
-};
+  return dayjs(firestoreDate.toDate())
+}
 
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-const midnightThisMorning = Timestamp.fromDate(today);
+const today = new Date()
+today.setHours(0, 0, 0, 0)
+const midnightThisMorning = Timestamp.fromDate(today)
 
 export const fetchSimpleAvailability = async (availabilityId: string): Promise<Availability> => {
-  const availabilityDoc = await getDoc(doc(db, "availabilities", availabilityId));
-  const data = availabilityDoc.data();
+  const availabilityDoc = await getDoc(doc(db, "availabilities", availabilityId))
+  const data = availabilityDoc.data()
   if (data) {
     return {
       id: availabilityId,
@@ -42,20 +43,20 @@ export const fetchSimpleAvailability = async (availabilityId: string): Promise<A
       startDate: convertFirestoreDateToDayjs(data.startDate),
       endDate: convertFirestoreDateToDayjs(data.endDate),
       options: [],
-    } as unknown as Availability;
+    } as unknown as Availability
   }
-  return {} as unknown as Availability;
-};
+  return {} as unknown as Availability
+}
 
 export const fetchAvailabilities = async (): Promise<Availability[]> => {
   const querySnapshot = await getDocs(
     query(collection(db, "availabilities"), where("endDate", ">=", midnightThisMorning))
-  );
+  )
   const availabilities = await Promise.all(
     querySnapshot.docs.map(async (availability) => {
-      const data = availability.data();
-      const options: Option[] = await fetchOptionsFromAvailabilityId(availability.id);
-      const artist = await fetchSimpleArtist(data.artistId);
+      const data = availability.data()
+      const options: Option[] = await fetchOptionsFromAvailabilityId(availability.id)
+      const artist = await fetchSimpleArtist(data.artistId)
 
       return {
         id: availability.id,
@@ -65,11 +66,11 @@ export const fetchAvailabilities = async (): Promise<Availability[]> => {
         startDate: convertFirestoreDateToDayjs(data.startDate),
         endDate: convertFirestoreDateToDayjs(data.endDate),
         options: options,
-      } as unknown as Availability;
+      } as unknown as Availability
     })
-  );
-  return availabilities;
-};
+  )
+  return availabilities
+}
 
 export const fetchAvailabilitiesFromArtistId = async (
   artistId: string
@@ -80,11 +81,11 @@ export const fetchAvailabilitiesFromArtistId = async (
       where("artistId", "==", artistId),
       where("endDate", ">=", midnightThisMorning)
     )
-  );
+  )
   const availabilities = await Promise.all(
     queryAvailabilities.docs.map(async (availability) => {
-      const data = availability.data();
-      const options: Option[] = await fetchOptionsFromAvailabilityId(availability.id);
+      const data = availability.data()
+      const options: Option[] = await fetchOptionsFromAvailabilityId(availability.id)
       return {
         id: availability.id,
         artistId: artistId,
@@ -93,11 +94,11 @@ export const fetchAvailabilitiesFromArtistId = async (
         startDate: convertFirestoreDateToDayjs(data.startDate),
         endDate: convertFirestoreDateToDayjs(data.endDate),
         options: options,
-      } as unknown as Availability;
+      } as unknown as Availability
     })
-  );
-  return availabilities;
-};
+  )
+  return availabilities
+}
 
 export const fetchConcertsFromArtistId = async (
   artistId: string,
@@ -105,11 +106,11 @@ export const fetchConcertsFromArtistId = async (
 ): Promise<Concert[]> => {
   const queryConcerts = await getDocs(
     query(collection(db, "concerts"), where("artistId", "==", artistId))
-  );
+  )
   const concerts = await Promise.all(
     queryConcerts.docs.map(async (concert) => {
-      const data = concert.data();
-      const venue = await fetchSimpleVenue(data.venueId);
+      const data = concert.data()
+      const venue = await fetchSimpleVenue(data.venueId)
 
       return {
         id: concert.id,
@@ -119,11 +120,11 @@ export const fetchConcertsFromArtistId = async (
         date: convertFirestoreDateToDayjs(data.date),
         venueId: data.venueId,
         venueName: venue.longName,
-      } as unknown as Concert;
+      } as unknown as Concert
     })
-  );
-  return concerts;
-};
+  )
+  return concerts
+}
 
 export const fetchOptionsFromAvailabilityId = async (availabilityId: string): Promise<Option[]> => {
   const queryOptions = await getDocs(
@@ -132,11 +133,11 @@ export const fetchOptionsFromAvailabilityId = async (availabilityId: string): Pr
       where("availabilityId", "==", availabilityId),
       where("date", ">=", midnightThisMorning)
     )
-  );
+  )
   const options = await Promise.all(
     queryOptions.docs.map(async (option) => {
-      const data = option.data();
-      const venue = await fetchSimpleVenue(data.venueId);
+      const data = option.data()
+      const venue = await fetchSimpleVenue(data.venueId)
 
       return {
         id: option.id,
@@ -144,17 +145,19 @@ export const fetchOptionsFromAvailabilityId = async (availabilityId: string): Pr
         organizer: data.organizer,
         date: convertFirestoreDateToDayjs(data.date),
         venueId: data.venueId,
+        artistId: data.artistId,
         venueName: venue.longName,
-      } as unknown as Option;
+        status: option.status ? option.status : optionStatus.proposée,
+      } as unknown as Option
     })
-  );
-  return options;
-};
+  )
+  return options
+}
 
 export const fetchArtists = async (): Promise<Artist[]> => {
-  const querySnapshot = await getDocs(collection(db, "artists"));
+  const querySnapshot = await getDocs(collection(db, "artists"))
   return querySnapshot.docs.map((artist) => {
-    const data = artist.data();
+    const data = artist.data()
     return {
       id: artist.id,
       longName: data.longName,
@@ -162,21 +165,21 @@ export const fetchArtists = async (): Promise<Artist[]> => {
       description: data.description,
       availabilities: [],
       concerts: [],
-    } as unknown as Artist;
-  });
-};
+    } as unknown as Artist
+  })
+}
 
 export const fetchArtistsFromString = async (searchString: string): Promise<Artist[]> => {
-  searchString = searchString.toLowerCase().replace(/\s/g, "");
+  searchString = searchString.toLowerCase().replace(/\s/g, "")
   const querySnapshot = await getDocs(
     query(
       collection(db, "artists"),
       where("shortName", ">=", searchString),
       where("shortName", "<=", searchString + "\uf8ff")
     )
-  );
+  )
   return querySnapshot.docs.map((artist) => {
-    const data = artist.data();
+    const data = artist.data()
     return {
       id: artist.id,
       longName: data.longName,
@@ -184,17 +187,17 @@ export const fetchArtistsFromString = async (searchString: string): Promise<Arti
       description: data.description,
       availabilities: [],
       concerts: [],
-    } as unknown as Artist;
-  });
-};
+    } as unknown as Artist
+  })
+}
 
 export const fetchArtist = async (artistId: string): Promise<Artist> => {
-  const artist = await getDoc(doc(db, "artists", artistId));
+  const artist = await getDoc(doc(db, "artists", artistId))
 
-  const data = artist.data();
+  const data = artist.data()
   if (data) {
-    const availabilities = await fetchAvailabilitiesFromArtistId(artistId);
-    const concerts = await fetchConcertsFromArtistId(artistId, data.longName);
+    const availabilities = await fetchAvailabilitiesFromArtistId(artistId)
+    const concerts = await fetchConcertsFromArtistId(artistId, data.longName)
     return {
       id: artist.id,
       longName: data.longName,
@@ -202,30 +205,30 @@ export const fetchArtist = async (artistId: string): Promise<Artist> => {
       description: data.description,
       availabilities: availabilities,
       concerts: concerts,
-    } as unknown as Artist;
+    } as unknown as Artist
   }
-  return {} as unknown as Artist;
-};
+  return {} as unknown as Artist
+}
 
 export const fetchArtistFromShortName = async (shortName: string): Promise<Artist> => {
   // Query to find the artist with matching shortName
-  const artistQuery = query(collection(db, "artists"), where("shortName", "==", shortName));
+  const artistQuery = query(collection(db, "artists"), where("shortName", "==", shortName))
 
-  const querySnapshot = await getDocs(artistQuery);
+  const querySnapshot = await getDocs(artistQuery)
 
   // Check if any results found
   if (querySnapshot.empty) {
-    return {} as unknown as Artist;
+    return {} as unknown as Artist
   }
 
   // Get the first matching artist
-  const artistDoc = querySnapshot.docs[0];
-  const data = artistDoc.data();
-  const artistId = artistDoc.id;
+  const artistDoc = querySnapshot.docs[0]
+  const data = artistDoc.data()
+  const artistId = artistDoc.id
 
   // Fetch related data
-  const availabilities = await fetchAvailabilitiesFromArtistId(artistId);
-  const concerts = await fetchConcertsFromArtistId(artistId, data.longName);
+  const availabilities = await fetchAvailabilitiesFromArtistId(artistId)
+  const concerts = await fetchConcertsFromArtistId(artistId, data.longName)
 
   return {
     id: artistId,
@@ -234,12 +237,12 @@ export const fetchArtistFromShortName = async (shortName: string): Promise<Artis
     description: data.description,
     availabilities: availabilities,
     concerts: concerts,
-  } as unknown as Artist;
-};
+  } as unknown as Artist
+}
 
 export const fetchSimpleArtist = async (artistId: string): Promise<Artist> => {
-  const artistDoc = await getDoc(doc(db, "artists", artistId));
-  const data = artistDoc.data();
+  const artistDoc = await getDoc(doc(db, "artists", artistId))
+  const data = artistDoc.data()
   if (data) {
     return {
       id: artistId,
@@ -248,14 +251,14 @@ export const fetchSimpleArtist = async (artistId: string): Promise<Artist> => {
       description: data.description,
       availabilities: [],
       concerts: [],
-    } as unknown as Artist;
+    } as unknown as Artist
   }
-  return {} as unknown as Artist;
-};
+  return {} as unknown as Artist
+}
 
 export const fetchSimpleVenue = async (venueId: string): Promise<Venue> => {
-  const venueDoc = await getDoc(doc(db, "venues", venueId));
-  const data = venueDoc.data();
+  const venueDoc = await getDoc(doc(db, "venues", venueId))
+  const data = venueDoc.data()
   if (data) {
     return {
       id: venueId,
@@ -264,10 +267,10 @@ export const fetchSimpleVenue = async (venueId: string): Promise<Venue> => {
       region: data.region,
       description: data.description,
       concerts: [],
-    } as unknown as Venue;
+    } as unknown as Venue
   }
-  return {} as unknown as Venue;
-};
+  return {} as unknown as Venue
+}
 
 export const addAvailability = async (availability: Availability): Promise<void> => {
   const docRef = await addDoc(collection(db, "availabilities"), {
@@ -275,9 +278,9 @@ export const addAvailability = async (availability: Availability): Promise<void>
     zones: availability.zones,
     startDate: Timestamp.fromDate(availability.startDate.toDate()),
     endDate: Timestamp.fromDate(availability.endDate.toDate()),
-  });
-  console.log("Document written with ID: ", docRef.id);
-};
+  })
+  console.log("Document written with ID: ", docRef.id)
+}
 
 export const createOptionFromAvailability = async (
   availability: Availability,
@@ -289,33 +292,54 @@ export const createOptionFromAvailability = async (
     artistId: availability.artistId,
     availabilityId: availability.id,
     date: Timestamp.fromDate(date.toDate()),
-  };
+    status: optionStatus.proposée,
+  }
 
-  const optionRef = await addDoc(collection(db, "options"), optionData);
-  console.log("Option created with ID: ", optionRef.id);
-};
+  const optionRef = await addDoc(collection(db, "options"), optionData)
+  console.log("Option created with ID: ", optionRef.id)
+}
 
-export const validateOption = async (option: Option): Promise<void> => {
-  const availability = await fetchSimpleAvailability(option.availabilityId);
+const updateOption = async (option: Option, status: optionStatus): Promise<void> => {
+  return await updateDoc(doc(db, "options", option.id), {
+    id: option.id,
+    organizer: option.organizer,
+    artistId: option.artistId,
+    availabilityId: option.availabilityId,
+    venueId: option.venueId,
+    date: Timestamp.fromDate(option.date),
+    status: status,
+  })
+}
+
+export const acceptOption = async (option: Option): Promise<void> => {
+  await updateOption(option, optionStatus.acceptée)
+  console.log("Option acceptée with ID: ", option.id)
+}
+
+export const confirmOption = async (option: Option): Promise<void> => {
+  const availability = await fetchSimpleAvailability(option.availabilityId)
 
   const concertData = {
     organizer: option.organizer,
     artistId: availability.artistId,
     venueId: option.venueId,
     date: Timestamp.fromDate(option.date.toDate()),
-  };
+  }
 
   // Add the concert to the "concerts" collection
-  const concertRef = await addDoc(collection(db, "concerts"), concertData);
-  console.log("Concert created with ID: ", concertRef.id);
+  const concertRef = await addDoc(collection(db, "concerts"), concertData)
+  console.log("Concert created with ID: ", concertRef.id)
 
-  // Delete the option from the "options" collection
-  await deleteDoc(doc(db, "options", option.id));
-  console.log("Option deleted with ID: ", option.id);
-};
+  await updateOption(option, optionStatus.confirmée)
+  console.log("Option confirmée with ID: ", option.id)
+}
 
-export const cancelOption = async (optionId: string): Promise<void> => {
-  // Delete the option from the "options" collection
-  await deleteDoc(doc(db, "options", optionId));
-  console.log("Option deleted with ID: ", optionId);
-};
+export const refuseOption = async (option: Option): Promise<void> => {
+  await updateOption(option, optionStatus.refusée)
+  console.log("Option refusée with ID: ", option.id)
+}
+
+export const deleteOption = async (option: Option): Promise<void> => {
+  await deleteDoc(doc(db, "options", option.id))
+  console.log("Option deleted with ID: ", option.id)
+}

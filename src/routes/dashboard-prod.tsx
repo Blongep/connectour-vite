@@ -1,38 +1,38 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { Box, Container, Stack, Typography } from "@mui/joy";
-import Divider from "@mui/joy/Divider";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import { useEffect, useState } from "react";
-import { AvailabilityProdGrid } from "../components/availabilities-prod-grid";
-import { OptionsProdGrid } from "../components/options-prod-grid";
-import { useCurrentUser } from "../core/auth";
-import { usePageEffect } from "../core/page";
-import { fetchAvailabilities } from "../services/artist-service";
-import { Availability } from "../types/availability";
+import { Box, Container, Stack, Typography } from "@mui/joy"
+import Divider from "@mui/joy/Divider"
+import Tab from "@mui/material/Tab"
+import Tabs from "@mui/material/Tabs"
+import { useEffect, useState } from "react"
+import { CommonGrid } from "../components/common-grid"
+import { useCurrentUser } from "../core/auth"
+import { usePageEffect } from "../core/page"
+import { fetchAvailabilities } from "../services/artist-service"
+import { Availability } from "../types/availability"
+import React from "react"
 
 interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
+  children?: React.ReactNode
+  index: number
+  value: number
 }
 
 export const Component = function DashboardProd(): JSX.Element {
-  usePageEffect({ title: "Dashboard Prod" });
+  usePageEffect({ title: "Dashboard Prod" })
 
-  const [availabilityData, setAvailabilityData] = useState<Availability[]>([]);
-  const currentUser = useCurrentUser();
+  const [availabilityData, setAvailabilityData] = useState<Availability[]>([])
+  const currentUser = useCurrentUser()
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props
 
     return (
       <div
@@ -44,33 +44,33 @@ export const Component = function DashboardProd(): JSX.Element {
       >
         {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
       </div>
-    );
+    )
   }
 
   function a11yProps(index: number) {
     return {
       id: `simple-tab-${index}`,
       "aria-controls": `simple-tabpanel-${index}`,
-    };
+    }
   }
   async function fetchAvailabilityData() {
     if (currentUser) {
       try {
-        const availabilities = await fetchAvailabilities();
-        setAvailabilityData(availabilities);
+        const availabilities = await fetchAvailabilities()
+        setAvailabilityData(availabilities)
       } catch (error) {
-        console.error("Error fetching availability data:", error);
+        console.error("Error fetching availability data:", error)
       }
     }
   }
 
   useEffect(() => {
-    fetchAvailabilityData();
+    fetchAvailabilityData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  }, [currentUser])
 
   function handleUpdate(): void {
-    fetchAvailabilityData();
+    fetchAvailabilityData()
   }
 
   return (
@@ -87,15 +87,27 @@ export const Component = function DashboardProd(): JSX.Element {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Disponibilités
+          Consulter les disponibilités
         </Typography>
-        <AvailabilityProdGrid availabilities={availabilityData || []} updateState={handleUpdate} />
+        <CommonGrid
+          availabilities={availabilityData || []}
+          updateState={handleUpdate}
+          withArtistName={true}
+          onlyWithOptions={false}
+          artistManagement={false}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Options
+          Gérer mes options
         </Typography>
-        <OptionsProdGrid availabilities={availabilityData || []} updateState={handleUpdate} />
+        <CommonGrid
+          availabilities={availabilityData || []}
+          updateState={handleUpdate}
+          withArtistName={true}
+          onlyWithOptions={true}
+          artistManagement={false}
+        />
       </CustomTabPanel>
 
       <Box sx={{ width: "100%" }}>
@@ -120,5 +132,5 @@ export const Component = function DashboardProd(): JSX.Element {
         ))} */}
       </Box>
     </Container>
-  );
-};
+  )
+}

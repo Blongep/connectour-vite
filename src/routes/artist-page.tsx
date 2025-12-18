@@ -1,38 +1,40 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { Box, Card, CardContent, Container, IconButton, Typography } from "@mui/joy";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { AvailabilitySimpleGrid, ConcertGrid } from "../components";
-import { useCurrentUser } from "../core/auth";
-import { usePageEffect } from "../core/page";
-import { fetchArtistFromShortName } from "../services/artist-service";
-import { isUserSubscribedToArtist, subscribeToArtist } from "../services/user-service";
-import { Artist } from "../types/artist";
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
+import { Box, Card, CardContent, Container, IconButton, Typography } from "@mui/joy"
+import Tab from "@mui/material/Tab"
+import Tabs from "@mui/material/Tabs"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { ConcertGrid } from "../components"
+import { useCurrentUser } from "../core/auth"
+import { usePageEffect } from "../core/page"
+import { fetchArtistFromShortName } from "../services/artist-service"
+import { isUserSubscribedToArtist, subscribeToArtist } from "../services/user-service"
+import { Artist } from "../types/artist"
+import { CommonGrid } from "../components/common-grid"
+import React from "react"
 
 interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
+  children?: React.ReactNode
+  index: number
+  value: number
 }
 
 export const Component = function ArtistPage(): JSX.Element {
-  const { artistShortName } = useParams();
-  const [artistData, setArtistData] = useState<Artist>();
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const { artistShortName } = useParams()
+  const [artistData, setArtistData] = useState<Artist>()
+  const [isSubscribed, setIsSubscribed] = useState(false)
 
-  const currentUser = useCurrentUser();
+  const currentUser = useCurrentUser()
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props
 
     return (
       <div
@@ -44,48 +46,48 @@ export const Component = function ArtistPage(): JSX.Element {
       >
         {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
       </div>
-    );
+    )
   }
 
   function a11yProps(index: number) {
     return {
       id: `simple-tab-${index}`,
       "aria-controls": `simple-tabpanel-${index}`,
-    };
+    }
   }
 
   async function fetchData() {
     if (currentUser && artistShortName) {
-      const artist = await fetchArtistFromShortName(artistShortName);
-      setArtistData(artist);
-      const isSubscribed = await isUserSubscribedToArtist(currentUser.uid, artist.id);
-      setIsSubscribed(isSubscribed);
-      console.log(artist);
+      const artist = await fetchArtistFromShortName(artistShortName)
+      setArtistData(artist)
+      const isSubscribed = await isUserSubscribedToArtist(currentUser.uid, artist.id)
+      setIsSubscribed(isSubscribed)
+      console.log(artist)
     }
   }
 
   function handleUpdate(): void {
-    fetchData();
+    fetchData()
   }
 
   async function handleSubscribe() {
     try {
       if (currentUser && artistData) {
-        await subscribeToArtist(currentUser.uid, artistData.id);
-        setIsSubscribed(true);
-        console.log(`Subscribed to artist: ${artistData?.longName}`);
+        await subscribeToArtist(currentUser.uid, artistData.id)
+        setIsSubscribed(true)
+        console.log(`Subscribed to artist: ${artistData?.longName}`)
       }
     } catch (error) {
-      console.error("Failed to subscribe:", error);
+      console.error("Failed to subscribe:", error)
     }
   }
 
   useEffect(() => {
-    fetchData();
+    fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, artistShortName]);
+  }, [currentUser, artistShortName])
 
-  usePageEffect({ title: artistData?.longName });
+  usePageEffect({ title: artistData?.longName })
 
   return (
     <Container sx={{ py: 2 }}>
@@ -104,7 +106,7 @@ export const Component = function ArtistPage(): JSX.Element {
                 sx={{ mb: 1 }}
                 variant="plain"
                 onClick={() => {
-                  handleSubscribe();
+                  handleSubscribe()
                 }}
               >
                 <FavoriteBorderIcon />
@@ -125,9 +127,12 @@ export const Component = function ArtistPage(): JSX.Element {
         <Typography color="primary" sx={{ mb: 1 }} level="h3">
           Disponibilités
         </Typography>
-        <AvailabilitySimpleGrid
+        <CommonGrid
           availabilities={artistData?.availabilities || []}
           updateState={handleUpdate}
+          withArtistName={true}
+          onlyWithOptions={false}
+          artistManagement={false}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
@@ -137,5 +142,5 @@ export const Component = function ArtistPage(): JSX.Element {
         <ConcertGrid concerts={artistData?.concerts || []} />
       </CustomTabPanel>
     </Container>
-  );
-};
+  )
+}
