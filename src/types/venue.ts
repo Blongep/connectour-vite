@@ -1,10 +1,10 @@
-import { Concert } from "./concert";
+import { Concert } from "./concert"
 
 export type Venue = {
-  shortName: string;
-  longName: string;
-  region: string;
-  id: string;
-  description: string;
-  concerts: Concert[];
-};
+  shortName: string
+  longName: string
+  region: string
+  id: string
+  description: string
+  concerts: Concert[]
+}

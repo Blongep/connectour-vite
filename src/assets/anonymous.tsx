@@ -1,7 +1,7 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { SvgIcon, SvgIconProps } from "@mui/joy";
+import { SvgIcon, SvgIconProps } from "@mui/joy"
 
 export function AnonymousIcon(props: AnonymousIconProps): JSX.Element {
   return (
@@ -39,7 +39,7 @@ export function AnonymousIcon(props: AnonymousIconProps): JSX.Element {
         strokeMiterlimit={10}
       />
     </SvgIcon>
-  );
+  )
 }
 
-export type AnonymousIconProps = Omit<SvgIconProps, "children">;
+export type AnonymousIconProps = Omit<SvgIconProps, "children">

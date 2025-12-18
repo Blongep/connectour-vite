@@ -1,23 +1,23 @@
-import SearchIcon from "@mui/icons-material/Search";
-import { Box, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import { SearchedArtists } from "./searched-artists";
+import SearchIcon from "@mui/icons-material/Search"
+import { Box, TextField } from "@mui/material"
+import { useEffect, useState } from "react"
+import { SearchedArtists } from "./searched-artists"
 
 export function SearchBar(): JSX.Element {
-  const [input, setInput] = useState("");
-  const [debouncedInputValue, setDebouncedInputValue] = useState("");
+  const [input, setInput] = useState("")
+  const [debouncedInputValue, setDebouncedInputValue] = useState("")
 
   const handleInput = (e) => {
-    setInput(e.target.value);
-  };
+    setInput(e.target.value)
+  }
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setDebouncedInputValue(input);
-      console.log(input);
-    }, 500);
-    return () => clearTimeout(timeoutId);
-  }, [input]);
+      setDebouncedInputValue(input)
+      console.log(input)
+    }, 500)
+    return () => clearTimeout(timeoutId)
+  }, [input])
 
   return (
     <Box
@@ -47,5 +47,5 @@ export function SearchBar(): JSX.Element {
 
       <SearchedArtists searchString={debouncedInputValue} />
     </Box>
-  );
+  )
 }

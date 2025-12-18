@@ -1,7 +1,7 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { SvgIcon, SvgIconProps } from "@mui/joy";
+import { SvgIcon, SvgIconProps } from "@mui/joy"
 
 export function GoogleIcon(props: GoogleIconProps): JSX.Element {
   return (
@@ -27,7 +27,7 @@ export function GoogleIcon(props: GoogleIconProps): JSX.Element {
         <path fill="none" d="M0 0h48v48H0z" />
       </g>
     </SvgIcon>
-  );
+  )
 }
 
-export type GoogleIconProps = Omit<SvgIconProps, "children">;
+export type GoogleIconProps = Omit<SvgIconProps, "children">

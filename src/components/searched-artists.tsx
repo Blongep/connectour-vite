@@ -1,12 +1,12 @@
-import { Box, Link } from "@mui/joy";
-import { Paper, Typography } from "@mui/material";
-import Popper from "@mui/material/Popper";
-import { Stack } from "@mui/system";
+import { Box, Link } from "@mui/joy"
+import { Paper, Typography } from "@mui/material"
+import Popper from "@mui/material/Popper"
+import { Stack } from "@mui/system"
 
-import { useEffect, useState } from "react";
-import { fetchArtistsFromString } from "../services/artist-service";
-import { Artist } from "../types/artist";
-import React from "react";
+import { useEffect, useState } from "react"
+import { fetchArtistsFromString } from "../services/artist-service"
+import { Artist } from "../types/artist"
+import React from "react"
 
 /**
  * Component to filter and display products based on search input.
@@ -16,19 +16,19 @@ import React from "react";
  */
 export function SearchedArtists(searchedArtistsProps: SearchedArtistsProps): JSX.Element {
   // Create a new array, filteredList, using the array filter function to filter the dummy data based on input.
-  const [artistsData, setArtistsData] = useState<Artist[]>([]);
-  const searchBar = document.getElementById("search-bar");
+  const [artistsData, setArtistsData] = useState<Artist[]>([])
+  const searchBar = document.getElementById("search-bar")
 
   useEffect(() => {
     async function fetchData() {
-      const artists = await fetchArtistsFromString(searchedArtistsProps.searchString);
-      console.log(artists);
-      setArtistsData(artists);
+      const artists = await fetchArtistsFromString(searchedArtistsProps.searchString)
+      console.log(artists)
+      setArtistsData(artists)
     }
     if (searchedArtistsProps.searchString) {
-      fetchData();
+      fetchData()
     }
-  }, [searchedArtistsProps.searchString]);
+  }, [searchedArtistsProps.searchString])
 
   // Display the filtered product list.
   return (
@@ -76,9 +76,9 @@ export function SearchedArtists(searchedArtistsProps: SearchedArtistsProps): JSX
         </Popper>
       )}
     </React.Fragment>
-  );
+  )
 }
 
 export type SearchedArtistsProps = {
-  searchString: string;
-};
+  searchString: string
+}

@@ -1,7 +1,7 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { Dashboard } from "@mui/icons-material";
+import { Dashboard } from "@mui/icons-material"
 import {
   List,
   ListItem,
@@ -9,14 +9,14 @@ import {
   ListItemContent,
   ListItemDecorator,
   ListProps,
-} from "@mui/joy";
-import { ReactNode, memo, useState } from "react";
-import { Link, useMatch } from "react-router-dom";
-import { useCurrentUserType } from "../core/auth";
+} from "@mui/joy"
+import { ReactNode, memo, useState } from "react"
+import { Link, useMatch } from "react-router-dom"
+import { useCurrentUserType } from "../core/auth"
 
 export const Navigation = memo(function Navigation(props: NavigationProps): JSX.Element {
-  const { sx, ...other } = props;
-  const [currentUserType] = useState(useCurrentUserType());
+  const { sx, ...other } = props
+  const [currentUserType] = useState(useCurrentUserType())
 
   return (
     <List sx={{ "--ListItem-radius": "4px", ...sx }} size="sm" role="navigation" {...other}>
@@ -28,8 +28,8 @@ export const Navigation = memo(function Navigation(props: NavigationProps): JSX.
       )}
       <NavItem path="/dashboard/agent" label="Dashboard Agent" icon={<Dashboard />} />
     </List>
-  );
-});
+  )
+})
 
 function NavItem(props: NavItemProps): JSX.Element {
   return (
@@ -44,12 +44,12 @@ function NavItem(props: NavItemProps): JSX.Element {
         <ListItemContent>{props.label}</ListItemContent>
       </ListItemButton>
     </ListItem>
-  );
+  )
 }
 
-type NavigationProps = Omit<ListProps, "children">;
+type NavigationProps = Omit<ListProps, "children">
 type NavItemProps = {
-  path: string;
-  label: string;
-  icon: ReactNode;
-};
+  path: string
+  label: string
+  icon: ReactNode
+}

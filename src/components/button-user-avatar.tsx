@@ -1,7 +1,7 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { LogoutRounded, SettingsRounded } from "@mui/icons-material";
+import { LogoutRounded, SettingsRounded } from "@mui/icons-material"
 import {
   Avatar,
   Dropdown,
@@ -12,15 +12,15 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-} from "@mui/joy";
-import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { useCurrentUser } from "../core/auth";
+} from "@mui/joy"
+import { getAuth, signOut } from "firebase/auth"
+import { useNavigate } from "react-router-dom"
+import { useCurrentUser } from "../core/auth"
 
 export function UserAvatarButton(props: UserAvatarButtonProps): JSX.Element {
-  const { sx, ...other } = props;
-  const user = useCurrentUser()!;
-  const navigate = useNavigate();
+  const { sx, ...other } = props
+  const user = useCurrentUser()!
+  const navigate = useNavigate()
 
   return (
     <Dropdown>
@@ -50,7 +50,7 @@ export function UserAvatarButton(props: UserAvatarButtonProps): JSX.Element {
             signOut(getAuth())
               .then(() => navigate("/"))
               .finally(() => {
-                window.location.reload();
+                window.location.reload()
               })
           }
         >
@@ -61,7 +61,7 @@ export function UserAvatarButton(props: UserAvatarButtonProps): JSX.Element {
         </MenuItem>
       </Menu>
     </Dropdown>
-  );
+  )
 }
 
-export type UserAvatarButtonProps = Omit<IconButtonProps, "children">;
+export type UserAvatarButtonProps = Omit<IconButtonProps, "children">

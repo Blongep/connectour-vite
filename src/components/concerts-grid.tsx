@@ -1,6 +1,6 @@
-import { Table, Typography } from "@mui/joy";
-import dayjs from "dayjs";
-import { Concert } from "../types/concert";
+import { Table, Typography } from "@mui/joy"
+import dayjs from "dayjs"
+import { Concert } from "../types/concert"
 
 export function ConcertGrid(concertsProps: ConcertGridProps): JSX.Element {
   return (
@@ -30,9 +30,9 @@ export function ConcertGrid(concertsProps: ConcertGridProps): JSX.Element {
         ))}
       </tbody>
     </Table>
-  );
+  )
 }
 
 export type ConcertGridProps = {
-  concerts: Concert[];
-};
+  concerts: Concert[]
+}

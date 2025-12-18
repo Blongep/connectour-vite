@@ -1,4 +1,4 @@
 export type Region = {
-  nom: string;
-  code: string;
-};
+  nom: string
+  code: string
+}
