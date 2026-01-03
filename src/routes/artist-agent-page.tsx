@@ -9,6 +9,10 @@ import { fetchArtistFromShortName } from "../services/artist-service"
 import { Artist } from "../types/artist"
 import { CommonGrid } from "../components/common-grid"
 import React from "react"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import { AvailabilityForm } from "../components/availability-form"
+import { ConcertGrid } from "../components/concerts-grid"
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -71,59 +75,59 @@ export const Component = function ArtistPage(): JSX.Element {
 
   return (
     <Container sx={{ py: 2 }}>
-      <Typography color="primary" sx={{ mb: 2 }} level="h2">
-        {artistData?.longName}
-      </Typography>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+        <Typography color="primary" sx={{ mb: 2 }} level="h2">
+          {artistData?.longName}
+        </Typography>
 
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Card sx={{ mb: 2 }} key={artistData?.id}>
-          <CardContent sx={{ minHeight: 150 }}>
-            <Typography color="primary">{artistData?.description}</Typography>
-          </CardContent>
-        </Card>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Disponibilités" {...a11yProps(0)} />
-          <Tab label="Options" {...a11yProps(1)} />
-          <Tab label="Dates programmées" {...a11yProps(2)} />
-          <Tab label="Nouvelle disponibilité" {...a11yProps(3)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Disponibilités
-        </Typography>
-        <CommonGrid
-          availabilities={artistData?.availabilities || []}
-          updateState={handleUpdate}
-          withArtistName={false}
-          onlyWithOptions={false}
-          artistManagement={true}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Options
-        </Typography>
-        <CommonGrid
-          availabilities={artistData?.availabilities || []}
-          updateState={handleUpdate}
-          withArtistName={false}
-          onlyWithOptions={true}
-          artistManagement={true}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Dates programmées
-        </Typography>
-        <ConcertGrid concerts={artistData?.concerts || []} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
-        <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Nouvelle disponibilité
-        </Typography>
-        <AvailabilityForm artistId={artistData?.id || ""} updateState={handleUpdate} />
-      </CustomTabPanel>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Card sx={{ mb: 2 }} key={artistData?.id}>
+            <CardContent sx={{ minHeight: 150 }}>
+              <Typography color="primary">{artistData?.description}</Typography>
+            </CardContent>
+          </Card>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Disponibilités" {...a11yProps(0)} />
+            <Tab label="Options" {...a11yProps(1)} />
+            <Tab label="Dates programmées" {...a11yProps(2)} />
+            <Tab label="Nouvelle disponibilité" {...a11yProps(3)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <Typography color="primary" sx={{ mb: 1 }} level="h3">
+            Disponibilités
+          </Typography>
+          <CommonGrid
+            availabilities={artistData?.availabilities || []}
+            updateState={handleUpdate}
+            withArtistName={false}
+            onlyWithOptions={false}
+          />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Typography color="primary" sx={{ mb: 1 }} level="h3">
+            Options
+          </Typography>
+          <CommonGrid
+            availabilities={artistData?.availabilities || []}
+            updateState={handleUpdate}
+            withArtistName={false}
+            onlyWithOptions={true}
+          />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <Typography color="primary" sx={{ mb: 1 }} level="h3">
+            Dates programmées
+          </Typography>
+          <ConcertGrid concerts={artistData?.concerts || []} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <Typography color="primary" sx={{ mb: 1 }} level="h3">
+            Nouvelle disponibilité
+          </Typography>
+          <AvailabilityForm artistId={artistData?.id || ""} updateState={handleUpdate} />
+        </CustomTabPanel>
+      </LocalizationProvider>
     </Container>
   )
 }

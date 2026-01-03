@@ -8,9 +8,18 @@ import { Option } from "../types/option"
 import React from "react"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
+import {
+  ArtistManagementAvailabilityActions,
+  ArtistManagementOptionActions,
+  ProdManagementAvailabilityActions,
+  ProdManagementOptionActions,
+} from "./flow-action-buttons"
+import { useCurrentUserType } from "../core/auth"
 
 export function CommonGrid(gridProps: GridProps): JSX.Element {
-  const width: string = gridProps.withArtistName ? "21%" : "27%"
+  const width: string = gridProps.withArtistName ? "19%" : "23%"
+  const currentUserType = useCurrentUserType()
+
   return (
     <Table aria-label="basic table">
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
@@ -21,7 +30,7 @@ export function CommonGrid(gridProps: GridProps): JSX.Element {
             <th style={{ width: width }}>Région</th>
             <th style={{ width: width }}>Début de disponibilité</th>
             <th style={{ width: width }}>Fin de disponibilité</th>
-            <th style={{ width: "10%" }}>Actions</th>
+            <th style={{ width: "20%" }}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -35,7 +44,7 @@ export function CommonGrid(gridProps: GridProps): JSX.Element {
                   updateState={gridProps.updateState}
                   withArtistName={gridProps.withArtistName}
                   onlyWithOptions={gridProps.onlyWithOptions}
-                  artistManagement={gridProps.onlyWithOptions}
+                  currentUserType={currentUserType}
                 />
               )
           )}
@@ -51,9 +60,9 @@ function AvailabilityRow(props: {
   onToggle: () => void
   updateState: () => void
   withArtistName?: boolean
-  artistManagement?: boolean
   onlyWithOptions?: boolean
   isOpen: boolean
+  currentUserType: { type: string } | null
 }) {
   const availability = props.availability
   return (
@@ -92,14 +101,23 @@ function AvailabilityRow(props: {
       <td>
         <Typography color="primary">{dayjs(availability.endDate).format("DD/MM/YYYY")}</Typography>
       </td>
+      <td>
+        {props.currentUserType?.type === "agent" && <ArtistManagementAvailabilityActions />}
+        {props.currentUserType?.type === "prod" && (
+          <ProdManagementAvailabilityActions
+            availability={availability}
+            updateState={props.updateState}
+          />
+        )}
+      </td>
     </tr>
   )
 }
 
 function OptionRow(props: {
   availability: Availability
-  artistManagement: boolean
   updateState: () => void
+  currentUserType: { type: string } | null
 }) {
   return (
     <tr>
@@ -139,7 +157,20 @@ function OptionRow(props: {
                       {dayjs(option.date).format("DD/MM/YYYY")}
                     </Typography>
                   </td>
-                  <td></td>
+                  <td>
+                    {props.currentUserType?.type === "agent" && (
+                      <ArtistManagementOptionActions
+                        option={option}
+                        updateState={props.updateState}
+                      />
+                    )}
+                    {props.currentUserType?.type === "prod" && (
+                      <ProdManagementOptionActions
+                        option={option}
+                        updateState={props.updateState}
+                      />
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -155,8 +186,8 @@ function Row(props: {
   initialOpen?: boolean
   withArtistName?: boolean
   onlyWithOptions?: boolean
-  artistManagement?: boolean
   updateState: () => void
+  currentUserType: { type: string } | null
 }) {
   const [open, setOpen] = React.useState(props.initialOpen || false)
   return (
@@ -167,14 +198,15 @@ function Row(props: {
         onToggle={() => setOpen(!open)}
         isOpen={open}
         withArtistName={props.withArtistName}
-        artistManagement={props.artistManagement}
         updateState={props.updateState}
+        onlyWithOptions={props.onlyWithOptions}
+        currentUserType={props.currentUserType}
       />
       {open && props.onlyWithOptions && (
         <OptionRow
           availability={props.availability}
-          artistManagement={props.artistManagement}
           updateState={props.updateState}
+          currentUserType={props.currentUserType}
         />
       )}
     </React.Fragment>
@@ -186,5 +218,4 @@ export type GridProps = {
   updateState: () => void
   withArtistName?: boolean
   onlyWithOptions?: boolean
-  artistManagement?: boolean
 }

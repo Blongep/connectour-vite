@@ -12,6 +12,8 @@ import { usePageEffect } from "../core/page"
 import { fetchAvailabilities } from "../services/artist-service"
 import { Availability } from "../types/availability"
 import React from "react"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -75,47 +77,46 @@ export const Component = function DashboardProd(): JSX.Element {
 
   return (
     <Container sx={{ py: 2 }}>
-      <Typography color="primary" sx={{ mb: 2 }} level="h2">
-        Dashboard Prod
-      </Typography>
-
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Disponibilités" {...a11yProps(0)} />
-          <Tab label="Options" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Consulter les disponibilités
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+        <Typography color="primary" sx={{ mb: 2 }} level="h2">
+          Dashboard Prod
         </Typography>
-        <CommonGrid
-          availabilities={availabilityData || []}
-          updateState={handleUpdate}
-          withArtistName={true}
-          onlyWithOptions={false}
-          artistManagement={false}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <Typography color="primary" sx={{ mb: 1 }} level="h3">
-          Gérer mes options
-        </Typography>
-        <CommonGrid
-          availabilities={availabilityData || []}
-          updateState={handleUpdate}
-          withArtistName={true}
-          onlyWithOptions={true}
-          artistManagement={false}
-        />
-      </CustomTabPanel>
 
-      <Box sx={{ width: "100%" }}>
-        <Stack spacing={3}>
-          <Divider />
-        </Stack>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Disponibilités" {...a11yProps(0)} />
+            <Tab label="Options" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <Typography color="primary" sx={{ mb: 1 }} level="h3">
+            Consulter les disponibilités
+          </Typography>
+          <CommonGrid
+            availabilities={availabilityData || []}
+            updateState={handleUpdate}
+            withArtistName={true}
+            onlyWithOptions={false}
+          />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Typography color="primary" sx={{ mb: 1 }} level="h3">
+            Gérer mes options
+          </Typography>
+          <CommonGrid
+            availabilities={availabilityData || []}
+            updateState={handleUpdate}
+            withArtistName={true}
+            onlyWithOptions={true}
+          />
+        </CustomTabPanel>
 
-        {/* {venueData.map((artist: Artist) => (
+        <Box sx={{ width: "100%" }}>
+          <Stack spacing={3}>
+            <Divider />
+          </Stack>
+
+          {/* {venueData.map((artist: Artist) => (
           <Card key={artist.id}>
             <CardContent sx={{ minHeight: 150 }}>
               <Button
@@ -130,7 +131,8 @@ export const Component = function DashboardProd(): JSX.Element {
             </CardContent>
           </Card>
         ))} */}
-      </Box>
+        </Box>
+      </LocalizationProvider>
     </Container>
   )
 }

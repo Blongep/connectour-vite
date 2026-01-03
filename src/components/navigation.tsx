@@ -13,6 +13,7 @@ import {
 import { ReactNode, memo, useState } from "react"
 import { Link, useMatch } from "react-router-dom"
 import { useCurrentUserType } from "../core/auth"
+import React from "react"
 
 export const Navigation = memo(function Navigation(props: NavigationProps): JSX.Element {
   const { sx, ...other } = props
@@ -26,7 +27,6 @@ export const Navigation = memo(function Navigation(props: NavigationProps): JSX.
       {currentUserType?.type === "prod" && (
         <NavItem path="/dashboard/prod" label="Dashboard Prod" icon={<Dashboard />} />
       )}
-      <NavItem path="/dashboard/agent" label="Dashboard Agent" icon={<Dashboard />} />
     </List>
   )
 })

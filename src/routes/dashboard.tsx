@@ -20,12 +20,12 @@ export const Component = function Dashboard(): JSX.Element {
               to="/dashboard/agent"
               sx={{ mr: 2 }}
             >
-              Agent Dashboard
+              Dashboard Agent
             </Button>
           )}
           {currentUserType?.type === "prod" && (
             <Button variant="contained" color="secondary" component={Link} to="/dashboard/prod">
-              Prod Dashboard
+              Dashboard Prod
             </Button>
           )}
         </Box>

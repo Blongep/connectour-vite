@@ -147,7 +147,7 @@ export const fetchOptionsFromAvailabilityId = async (availabilityId: string): Pr
         venueId: data.venueId,
         artistId: data.artistId,
         venueName: venue.longName,
-        status: option.status ? option.status : optionStatus.proposée,
+        status: data.status ? data.status : optionStatus.proposée,
       } as unknown as Option
     })
   )
@@ -306,7 +306,7 @@ const updateOption = async (option: Option, status: optionStatus): Promise<void>
     artistId: option.artistId,
     availabilityId: option.availabilityId,
     venueId: option.venueId,
-    date: Timestamp.fromDate(option.date),
+    date: Timestamp.fromDate(option.date.toDate()),
     status: status,
   })
 }
