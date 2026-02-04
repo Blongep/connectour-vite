@@ -1,29 +1,29 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import { Box, Button, Card, CardContent, Container, Typography } from "@mui/joy";
-import { useEffect, useState } from "react";
-import { useCurrentUser } from "../core/auth";
-import { usePageEffect } from "../core/page";
-import { fetchArtists } from "../services/artist-service";
-import { Artist } from "../types/artist";
+import OpenInNew from "@mui/icons-material/OpenInNew"
+import { Box, Button, Card, CardContent, Container, Typography } from "@mui/joy"
+import { useEffect, useState } from "react"
+import { useCurrentUser } from "../core/auth"
+import { usePageEffect } from "../core/page"
+import { fetchArtists } from "../services/artist-service"
+import { Artist } from "../types/artist"
 
 export const Component = function DashboardAgent(): JSX.Element {
-  usePageEffect({ title: "Dashboard Agent" });
+  usePageEffect({ title: "Dashboard Agent" })
 
-  const [artistsData, setArtistsData] = useState<Artist[]>([]);
-  const currentUser = useCurrentUser();
+  const [artistsData, setArtistsData] = useState<Artist[]>([])
+  const currentUser = useCurrentUser()
 
   useEffect(() => {
     async function fetchData() {
       if (currentUser) {
-        const artists = await fetchArtists();
-        setArtistsData(artists);
+        const artists = await fetchArtists()
+        setArtistsData(artists)
       }
     }
-    fetchData();
-  }, [currentUser]);
+    fetchData()
+  }, [currentUser])
 
   return (
     <Container sx={{ py: 2 }}>
@@ -57,5 +57,5 @@ export const Component = function DashboardAgent(): JSX.Element {
         ))}
       </Box>
     </Container>
-  );
-};
+  )
+}

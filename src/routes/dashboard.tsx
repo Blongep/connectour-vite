@@ -1,10 +1,10 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useCurrentUserType } from "../core/auth";
+import { Box, Button, Container, Typography } from "@mui/material"
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { useCurrentUserType } from "../core/auth"
 
 export const Component = function Dashboard(): JSX.Element {
-  const [currentUserType] = useState(useCurrentUserType());
+  const [currentUserType] = useState(useCurrentUserType())
   return (
     <Container>
       <Box sx={{ textAlign: "center", mt: 5 }}>
@@ -20,16 +20,16 @@ export const Component = function Dashboard(): JSX.Element {
               to="/dashboard/agent"
               sx={{ mr: 2 }}
             >
-              Agent Dashboard
+              Dashboard Agent
             </Button>
           )}
           {currentUserType?.type === "prod" && (
             <Button variant="contained" color="secondary" component={Link} to="/dashboard/prod">
-              Prod Dashboard
+              Dashboard Prod
             </Button>
           )}
         </Box>
       </Box>
     </Container>
-  );
-};
+  )
+}

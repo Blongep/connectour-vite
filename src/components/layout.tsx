@@ -1,12 +1,13 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { Box, GlobalStyles } from "@mui/joy";
-import { Fragment, Suspense } from "react";
-import { Outlet } from "react-router-dom";
-import { Logo } from "./logo";
-import { Sidebar } from "./sidebar";
-import { Toolbar } from "./toolbar";
+import { Box, GlobalStyles } from "@mui/joy"
+import { Fragment, Suspense } from "react"
+import { Outlet } from "react-router-dom"
+import { Logo } from "./logo"
+import { Sidebar } from "./sidebar"
+import { Toolbar } from "./toolbar"
+import React from "react"
 
 /**
  * The main application layout.
@@ -35,7 +36,7 @@ export function MainLayout(): JSX.Element {
         </Suspense>
       </Box>
     </Fragment>
-  );
+  )
 }
 
 /**
@@ -65,5 +66,5 @@ export function BaseLayout(): JSX.Element {
         </Suspense>
       </Box>
     </Fragment>
-  );
+  )
 }

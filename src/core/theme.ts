@@ -1,5 +1,5 @@
-import { extendTheme } from "@mui/joy/styles";
-import { experimental_extendTheme as materialExtendTheme } from "@mui/material/styles";
+import { extendTheme } from "@mui/joy/styles"
+import { experimental_extendTheme as materialExtendTheme } from "@mui/material/styles"
 
 export const themeJoy = extendTheme({
   colorSchemes: {
@@ -79,7 +79,7 @@ export const themeJoy = extendTheme({
       },
     },
   },
-});
+})
 
 export const themeMui = materialExtendTheme({
   colorSchemes: {
@@ -123,4 +123,4 @@ export const themeMui = materialExtendTheme({
       },
     },
   },
-});
+})

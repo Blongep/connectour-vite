@@ -1,17 +1,17 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { NotificationsRounded } from "@mui/icons-material";
-import { Box, BoxProps, Button, IconButton } from "@mui/joy";
-import { Fragment, Suspense } from "react";
-import { Link } from "react-router-dom";
-import { useCurrentUser } from "../core/auth";
-import { ColorSchemeButton } from "./button-color-scheme";
-import { UserAvatarButton } from "./button-user-avatar";
-import { SearchBar } from "./searchbar";
+import { NotificationsRounded } from "@mui/icons-material"
+import { Box, BoxProps, Button, IconButton } from "@mui/joy"
+import { Fragment, Suspense } from "react"
+import { Link } from "react-router-dom"
+import { useCurrentUser } from "../core/auth"
+import { ColorSchemeButton } from "./button-color-scheme"
+import { UserAvatarButton } from "./button-user-avatar"
+import { SearchBar } from "./searchbar"
 
 export function Toolbar(props: ToolbarProps): JSX.Element {
-  const { sx, ...other } = props;
+  const { sx, ...other } = props
 
   return (
     <Box
@@ -35,11 +35,11 @@ export function Toolbar(props: ToolbarProps): JSX.Element {
         <ActionButtons />
       </Suspense>
     </Box>
-  );
+  )
 }
 
 function ActionButtons(): JSX.Element {
-  const user = useCurrentUser();
+  const user = useCurrentUser()
 
   return (
     <Fragment>
@@ -57,7 +57,7 @@ function ActionButtons(): JSX.Element {
         </Button>
       )}
     </Fragment>
-  );
+  )
 }
 
-type ToolbarProps = Omit<BoxProps<"header">, "children">;
+type ToolbarProps = Omit<BoxProps<"header">, "children">

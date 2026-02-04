@@ -1,4 +1,4 @@
-import { Venue } from "../types/venue";
+import { Venue } from "../types/venue"
 
 const venues: Venue[] = [
   {
@@ -41,22 +41,22 @@ const venues: Venue[] = [
     description: "A dome-shaped venue for metal concerts.",
     concerts: [],
   },
-];
+]
 
 export const fetchVenues = (): Venue[] => {
-  const data = localStorage.getItem("venues");
+  const data = localStorage.getItem("venues")
   if (data === null) {
-    localStorage.setItem("venues", JSON.stringify(venues));
-    return venues;
+    localStorage.setItem("venues", JSON.stringify(venues))
+    return venues
   }
-  const parsedData = JSON.parse(data);
-  return parsedData || [];
-};
+  const parsedData = JSON.parse(data)
+  return parsedData || []
+}
 
 export const fetchVenue = (shortVenueName: string): Venue => {
-  const venueFound = fetchVenues().find((venue) => venue.shortName === shortVenueName);
+  const venueFound = fetchVenues().find((venue) => venue.shortName === shortVenueName)
   if (venueFound === undefined) {
-    throw new Response("Not Found", { status: 404 });
+    throw new Response("Not Found", { status: 404 })
   }
-  return venueFound;
-};
+  return venueFound
+}

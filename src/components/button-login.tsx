@@ -1,20 +1,20 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { Button, ButtonProps } from "@mui/joy";
-import { SignInMethod, useSignIn } from "../core/auth";
-import { AnonymousIcon, GoogleIcon } from "../assets";
+import { Button, ButtonProps } from "@mui/joy"
+import { SignInMethod, useSignIn } from "../core/auth"
+import { AnonymousIcon, GoogleIcon } from "../assets"
 
 export function LoginButton(props: LoginButtonProps): JSX.Element {
-  const { signInMethod, ...other } = props;
-  const [signIn, inFlight] = useSignIn(signInMethod);
+  const { signInMethod, ...other } = props
+  const [signIn, inFlight] = useSignIn(signInMethod)
 
   const icon =
     signInMethod === "google.com" ? (
       <GoogleIcon />
     ) : signInMethod === "anonymous" ? (
       <AnonymousIcon />
-    ) : null;
+    ) : null
 
   return (
     <Button
@@ -31,15 +31,15 @@ export function LoginButton(props: LoginButtonProps): JSX.Element {
       }
       {...other}
     />
-  );
+  )
 }
 
 export type LoginButtonProps = Omit<
   ButtonProps<
     "button",
     {
-      signInMethod: SignInMethod;
+      signInMethod: SignInMethod
     }
   >,
   "children"
->;
+>

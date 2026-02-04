@@ -1,8 +1,8 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { Container, ContainerProps, Typography } from "@mui/joy";
-import { LoginButton } from "../components";
+import { Container, ContainerProps, Typography } from "@mui/joy"
+import { LoginButton } from "../components"
 
 export const Component = function Login(): JSX.Element {
   return (
@@ -24,7 +24,7 @@ export const Component = function Login(): JSX.Element {
       <LoginButton signInMethod="google.com" />
       <LoginButton signInMethod="anonymous" />
     </Container>
-  );
-};
+  )
+}
 
-export type LoginProps = Omit<ContainerProps, "children">;
+export type LoginProps = Omit<ContainerProps, "children">

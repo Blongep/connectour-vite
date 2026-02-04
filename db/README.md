@@ -12,7 +12,7 @@ Database schema, security rules, indexes, and seed data for the [Firestore](http
 
 ## Scripts
 
-- `yarn workspace db seed` - Seed the database with data from [`/seeds`](./seeds/).
+- `npm run seed` - Seed the database with data from [`/seeds`](./seeds/).
 
 ## References
 

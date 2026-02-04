@@ -1,7 +1,7 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { DarkModeRounded, LightModeRounded } from "@mui/icons-material";
+import { DarkModeRounded, LightModeRounded } from "@mui/icons-material"
 import {
   Dropdown,
   IconButton,
@@ -11,13 +11,13 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-} from "@mui/joy";
-import { useColorScheme as useJoyColorScheme } from "@mui/joy/styles";
-import { useColorScheme as useMaterialColorScheme } from "@mui/material/styles";
-import { memo } from "react";
+} from "@mui/joy"
+import { useColorScheme as useJoyColorScheme } from "@mui/joy/styles"
+import { useColorScheme as useMaterialColorScheme } from "@mui/material/styles"
+import { memo } from "react"
 
 export function ColorSchemeButton(props: ColorSchemeButtonProps): JSX.Element {
-  const { mode, systemMode } = useJoyColorScheme();
+  const { mode, systemMode } = useJoyColorScheme()
 
   return (
     <Dropdown>
@@ -35,18 +35,18 @@ export function ColorSchemeButton(props: ColorSchemeButtonProps): JSX.Element {
         <ModeMenuItem mode="system" />
       </Menu>
     </Dropdown>
-  );
+  )
 }
 
 const ModeMenuItem = memo(function ModeMenuItem({ mode }: ModeMenuItemProps): JSX.Element {
-  const schemeJoy = useJoyColorScheme();
-  const schemeMaterial = useMaterialColorScheme();
+  const schemeJoy = useJoyColorScheme()
+  const schemeMaterial = useMaterialColorScheme()
 
   return (
     <MenuItem
       onClick={() => {
-        schemeJoy.setMode(mode);
-        schemeMaterial.setMode(mode);
+        schemeJoy.setMode(mode)
+        schemeMaterial.setMode(mode)
       }}
       selected={schemeJoy.mode === mode}
     >
@@ -61,8 +61,8 @@ const ModeMenuItem = memo(function ModeMenuItem({ mode }: ModeMenuItemProps): JS
         {mode === "light" ? "Light theme" : mode === "dark" ? "Dark theme" : "Device default"}
       </ListItemContent>
     </MenuItem>
-  );
-});
+  )
+})
 
-type ColorSchemeButtonProps = Omit<IconButtonProps, "children">;
-type ModeMenuItemProps = { mode: "dark" | "light" | "system" };
+type ColorSchemeButtonProps = Omit<IconButtonProps, "children">
+type ModeMenuItemProps = { mode: "dark" | "light" | "system" }

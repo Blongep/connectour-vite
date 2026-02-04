@@ -1,10 +1,17 @@
-import { Dayjs } from "dayjs";
-
+import { Dayjs } from "dayjs"
+export enum optionStatus {
+  proposée = "proposée",
+  acceptée = "acceptée",
+  confirmée = "confirmée",
+  refusée = "refusée",
+}
 export type Option = {
-  id: string;
-  organizer: string;
-  availabilityId: string;
-  venueId: string;
-  venueName: string;
-  date: Dayjs;
-};
+  id: string
+  organizer: string
+  artistId: string
+  venueId: string
+  venueName: string
+  availabilityId: string
+  date: Dayjs
+  status: optionStatus
+}

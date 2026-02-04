@@ -1,8 +1,8 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
-import React from "react";
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import { BaseLayout, MainLayout, RootError } from "../components";
+import React from "react"
+import { createBrowserRouter, Navigate } from "react-router-dom"
+import { BaseLayout, MainLayout, RootError } from "../components"
 
 /**
  * Application routes
@@ -37,4 +37,4 @@ export const router = createBrowserRouter([
       { path: "artist/:artistShortName", lazy: () => import("./artist-page") },
     ],
   },
-]);
+])

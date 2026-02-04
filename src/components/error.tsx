@@ -1,11 +1,11 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
 
-import { Container, Typography } from "@mui/joy";
-import { useRouteError } from "react-router-dom";
+import { Container, Typography } from "@mui/joy"
+import { useRouteError } from "react-router-dom"
 
 export function RootError(): JSX.Element {
-  const err = useRouteError() as RouteError;
+  const err = useRouteError() as RouteError
 
   return (
     <Container sx={{ marginTop: "43vh" }} maxWidth="sm">
@@ -22,7 +22,7 @@ export function RootError(): JSX.Element {
         <strong>Error {err.status || 500}</strong>: {err.statusText ?? err.message}
       </Typography>
     </Container>
-  );
+  )
 }
 
-type RouteError = Error & { status?: number; statusText?: string };
+type RouteError = Error & { status?: number; statusText?: string }
